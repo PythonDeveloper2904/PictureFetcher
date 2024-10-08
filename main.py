@@ -21,14 +21,19 @@ def get_response(url)->bs4.BeautifulSoup|None:
         print(colorama.Fore.RED+f"请求错误: {e}"+colorama.Style.RESET_ALL)
         return None
 
-def fetch_pictures():
+def fetch_pictures(soup:bs4.BeautifulSoup)->list|None:
+    """
+
+    :param soup:
+    :return:
+    """
     pass
 
 def save_pictures():
     pass
 
 def main():
-    global url,word,number,folder
+    global url,word,number,folder  # 将这四个变量设为全局变量
     colorama.init()  # 初始化colorama
     keyword = input(colorama.Fore.GREEN+"请输入关键词: "+colorama.Style.RESET_ALL)  # 输入关键词
     number = input(colorama.Fore.GREEN+"请输入图片数量: "+colorama.Style.RESET_ALL)  # 输入图片数量
