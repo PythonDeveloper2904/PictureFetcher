@@ -1,22 +1,36 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+"""
+main.py
+Project: PictureFetcher2
+Author: PythonDeveloper2904
+FirstCommitDate: 2024/10/4
+FinalCommitDate: -
+"""
+
 import bs4
 import colorama
 import os
 import requests
 from tqdm import tqdm
 
-def get_response(url)->bs4.BeautifulSoup|None:
+def get_response(url)->str|None:
     """
     发送请求并返回解析后的HTML内容
     :param url: 请求的URL
-    :return: BeautifulSoup对象, 如果请求失败则返回None
+    :return: 网页源代码, 如果请求失败则返回None
     """
+    head = {
+        "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+        "accept-language":"zh-CN,zh;q=0.9",
+        "cookie":"BIDUPSID=3FBC373560F6B1D9EC80226A0CD4825F; PSTM=1724165590; BAIDUID=3FBC373560F6B1D9082AF1AC8303E8F2:FG=1; H_PS_PSSID=60826; H_WISE_SIDS=60826; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; BA_HECTOR=2000a40ka4018g200k2l81ak3hejlj1jfvkkj1u; BAIDUID_BFESS=3FBC373560F6B1D9082AF1AC8303E8F2:FG=1; ZFY=cL0bb97ZEvetMQARzFcDs7F5IAVeM:B0643KCQxCqOs8:C; userFrom=null; BDRCVFR[dG2JNJb_ajR]=mk3SLVN4HKm; ab_sr=1.0.1_ODJmZTc0NWU2OGNlNzMyNTE5MTUyNGNhZWVhYTA2YmZkYzkwY2ZmOGRmZGQyYmJhNWVlMDc1OWY4NWQ4NzIyOTUwYjc3NmU4ZjFmZTViMTc5ZjBhMTc4MTc4YTdmODQ1MWUxM2I0MmFmYzc4ODAyYjhlYjcyNjYzN2JjNzVjMDNlOTA5ZDE2MWU3MzQ3NGNiMTcwMDI5ODI5Y2IzYWRjNw==; BDRCVFR[-pGxjrCMryR]=mk3SLVN4HKm"
+    }
     try:
-        response = requests.get(url)
+        response = requests.get(url,headers=head)
+        response.encoding = "utf-8"  # 将编码设为utf-8
         response.raise_for_status()  # 检查是否请求成功
-        return bs4.BeautifulSoup(response,parser="html.parser")
+        return response.text
     except requests.RequestException as e:
         print(colorama.Fore.RED+f"请求错误: {e}"+colorama.Style.RESET_ALL)
         return None
