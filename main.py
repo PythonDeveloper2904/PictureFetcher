@@ -12,10 +12,11 @@ FinalCommitDate: -
 import bs4
 import colorama
 import os
+import re  # 导入正则表达式模块
 import requests
 from tqdm import tqdm
 
-def get_response(url)->str|None:
+def get_response(url:str)->str|None:
     """
     发送请求并返回解析后的HTML内容
     :param url: 请求的URL
@@ -35,19 +36,22 @@ def get_response(url)->str|None:
         print(colorama.Fore.RED+f"请求错误: {e}"+colorama.Style.RESET_ALL)
         return None
 
-def fetch_pictures(soup:bs4.BeautifulSoup)->list|None:
+def fetch_pictures(text:str)->list|None:
     """
 
-    :param soup:
+    :param text:
     :return:
     """
-    pass
+    rule = r'"thumbURL": "(.+?)"'  # 通过正则表达式的规则, 匹配符合规则的子串
+    lst = re.findall(rule,text)
+    for u in lst:
+        print(u)
 
 def save_pictures():
     pass
 
 def main():
-    global url,word,number,folder  # 将这四个变量设为全局变量
+    global url,keyword,number,folder  # 将这四个变量设为全局变量
     colorama.init()  # 初始化colorama
     keyword = input(colorama.Fore.GREEN+"请输入关键词: "+colorama.Style.RESET_ALL)  # 输入关键词
     number = input(colorama.Fore.GREEN+"请输入图片数量: "+colorama.Style.RESET_ALL)  # 输入图片数量
@@ -59,12 +63,13 @@ def main():
     else:
         os.mkdir(folder)
     # 发送请求
-    url+=word
+    url+=keyword
     soup = get_response(url)
+    fetch_pictures(soup)
 
 if __name__=="__main__":
     url = "https://image.baidu.com/search/index?tn=baiduimage&ipn=r&ct=201326592&cl=2&lm=&st=-1&fm=index&hs=0&xthttps=111110&sf=1&ic=0&nc=1&showtab=0&fb=0&face=0&istype=2&ie=utf-8&word="
-    word = None
+    keyword = None
     number = None
     folder = None
     soup = None
