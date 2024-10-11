@@ -36,22 +36,30 @@ def get_response(url:str)->str|None:
         print(colorama.Fore.RED+f"请求错误: {e}"+colorama.Style.RESET_ALL)
         return None
 
-def fetch_pictures(text:str)->list|None:
+def fetch_pictures(text:str)->list:
     """
-
-    :param text:
-    :return:
+    从HTML文本中提取图片的URL
+    :param text: HTML文本
+    :return: 图片URL列表
     """
     rule = r'"thumbURL": "(.+?)"'  # 通过正则表达式的规则, 匹配符合规则的子串
     lst = re.findall(rule,text)
     for u in lst:
         print(u)
+    return lst
 
 def save_pictures():
     pass
 
 def main():
     global url,keyword,number,folder  # 将这四个变量设为全局变量
+    url = "https://image.baidu.com/search/index?tn=baiduimage&ipn=r&ct=201326592&cl=2&lm=&st=-1&fm=index&hs=0&xthttps=111110&sf=1&ic=0&nc=1&showtab=0&fb=0&face=0&istype=2&ie=utf-8&word="
+    index = 30
+    keyword = None
+    number = None
+    folder = None
+    soup = None
+    image_lst = []
     colorama.init()  # 初始化colorama
     keyword = input(colorama.Fore.GREEN+"请输入关键词: "+colorama.Style.RESET_ALL)  # 输入关键词
     number = input(colorama.Fore.GREEN+"请输入图片数量: "+colorama.Style.RESET_ALL)  # 输入图片数量
@@ -65,12 +73,17 @@ def main():
     # 发送请求
     url+=keyword
     soup = get_response(url)
-    fetch_pictures(soup)
+    # 获取图片地址
+    temp = fetch_pictures(soup)
+    # 把地址存储到列表中
+    while number>0:
+        url_next_page = "https://image.baidu.com/search/acjson?tn=resultjson_com&logid=10607818642965054456&ipn=rj&ct=201326592&is=&fp=result&fr=&word=%E5%B0%8F%E7%8B%97&queryWord=%E5%B0%8F%E7%8B%97&cl=2&lm=&ie=utf-8&oe=utf-8&adpicid=&st=-1&z=&ic=0&hd=&latest=&copyright=&s=&se=&tab=&width=&height=&face=0&istype=2&qc=&nc=1&expermode=&nojc=&isAsync=&pn="+str(index)+"&rn=30"
+        image_lst.extend(temp[0:number])
+        number-=len(temp)
+        soup = get_response(url_next_page)
+        # 获取下一页
+        temp = fetch_pictures(soup)
+        index+=30
 
 if __name__=="__main__":
-    url = "https://image.baidu.com/search/index?tn=baiduimage&ipn=r&ct=201326592&cl=2&lm=&st=-1&fm=index&hs=0&xthttps=111110&sf=1&ic=0&nc=1&showtab=0&fb=0&face=0&istype=2&ie=utf-8&word="
-    keyword = None
-    number = None
-    folder = None
-    soup = None
     main()
