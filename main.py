@@ -44,12 +44,27 @@ def fetch_pictures(text:str)->list:
     """
     rule = r'"thumbURL": "(.+?)"'  # 通过正则表达式的规则, 匹配符合规则的子串
     lst = re.findall(rule,text)
-    for u in lst:
-        print(u)
+    if len(lst)==0:
+        rule = r'"thumbURL":"(.+?)"'
+        lst = re.findall(rule,text)
     return lst
 
-def save_pictures():
-    pass
+def save_pictures(keyword:str,pictures:list)->None:
+    """
+
+    :return:
+    """
+    head = {
+        "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+        "accept-language":"zh-CN,zh;q=0.9",
+        "cookie":"BIDUPSID=3FBC373560F6B1D9EC80226A0CD4825F; PSTM=1724165590; BAIDUID=3FBC373560F6B1D9082AF1AC8303E8F2:FG=1; H_PS_PSSID=60826; H_WISE_SIDS=60826; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; BA_HECTOR=2000a40ka4018g200k2l81ak3hejlj1jfvkkj1u; BAIDUID_BFESS=3FBC373560F6B1D9082AF1AC8303E8F2:FG=1; ZFY=cL0bb97ZEvetMQARzFcDs7F5IAVeM:B0643KCQxCqOs8:C; userFrom=null; BDRCVFR[dG2JNJb_ajR]=mk3SLVN4HKm; ab_sr=1.0.1_ODJmZTc0NWU2OGNlNzMyNTE5MTUyNGNhZWVhYTA2YmZkYzkwY2ZmOGRmZGQyYmJhNWVlMDc1OWY4NWQ4NzIyOTUwYjc3NmU4ZjFmZTViMTc5ZjBhMTc4MTc4YTdmODQ1MWUxM2I0MmFmYzc4ODAyYjhlYjcyNjYzN2JjNzVjMDNlOTA5ZDE2MWU3MzQ3NGNiMTcwMDI5ODI5Y2IzYWRjNw==; BDRCVFR[-pGxjrCMryR]=mk3SLVN4HKm"
+    }
+    if not os.path.exists(f"./fetch_{keyword}"):
+        os.mkdir(f"./fetch_{keyword}")
+    for index,url in enumerate(pictures):
+        picture = requests.get(url,headers=head).content
+        with open(f'./fetch_{keyword}/{index}.jpg','wb')as f:
+            f.write(picture)
 
 def main():
     global url,keyword,number,folder  # 将这四个变量设为全局变量
@@ -58,7 +73,7 @@ def main():
     keyword = None
     number = None
     folder = None
-    soup = None
+    text = None
     image_lst = []
     colorama.init()  # 初始化colorama
     keyword = input(colorama.Fore.GREEN+"请输入关键词: "+colorama.Style.RESET_ALL)  # 输入关键词
@@ -84,6 +99,7 @@ def main():
         # 获取下一页
         temp = fetch_pictures(soup)
         index+=30
+    save_pictures(keyword,image_lst)
 
 if __name__=="__main__":
     main()
