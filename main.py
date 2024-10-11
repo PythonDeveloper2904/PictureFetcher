@@ -7,6 +7,7 @@ Project: PictureFetcher2
 Author: PythonDeveloper2904
 FirstCommitDate: 2024/10/4
 FinalCommitDate: -
+Version: 1.0
 """
 
 import bs4
