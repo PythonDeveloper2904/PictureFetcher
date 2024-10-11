@@ -1,4 +1,4 @@
-# PictureFetcher 
+# PictureFetcher
 
 ## 项目概述
 
