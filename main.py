@@ -6,7 +6,7 @@ main.py
 Project: PictureFetcher2
 Author: PythonDeveloper2904
 FirstCommitDate: 2024/10/4
-FinalCommitDate: -
+FinalCommitDate: 2024/10/11
 Version: 1.0
 """
 
@@ -52,8 +52,10 @@ def fetch_pictures(text:str)->list:
 
 def save_pictures(keyword:str,pictures:list)->None:
     """
-
-    :return:
+    保存提取的图片到本地
+    :param keyword: 搜索的关键词，用于创建文件夹
+    :param pictures: 图片URL列表
+    :return: None
     """
     head = {
         "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
