@@ -3,7 +3,7 @@
 
 """
 main.py
-Project: PictureFetcher2
+Project: PictureFetcher
 Author: PythonDeveloper2904
 FirstCommitDate: 2024/10/4
 FinalCommitDate: 2024/10/11
