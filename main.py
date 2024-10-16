@@ -4,7 +4,7 @@
 """
 main.py
 Project: PictureFetcher
-Author: PythonDeveloper2904
+Author: PythonDeveloper29042
 FirstCommitDate: 2024/10/4
 FinalCommitDate: 2024/10/11
 Version: 1.0
